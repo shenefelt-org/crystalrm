@@ -1,11 +1,22 @@
-<% content_for :title, "New wiki" %>
+<% content_for :title, "New Wiki" %>
 
-<h1>New wiki</h1>
+<div class="mx-auto flex w-full max-w-7xl flex-1 px-4 sm:px-6 lg:px-8 py-8">
+  <div class="w-full max-w-3xl mx-auto">
+    
+    <!-- Top Breadcrumb -->
+    <nav class="flex items-center gap-1.5 text-xs text-slate-500 mb-4 pb-3 border-b border-slate-200">
+      <%= link_to "Wiki", wikis_path, class: "hover:text-slate-800" %>
+      <span>/</span>
+      <span class="font-medium text-slate-700">New Article</span>
+    </nav>
 
-<%= render "form", wiki: @wiki %>
+    <div class="mb-6">
+      <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Create New Page</h1>
+      <p class="mt-1 text-sm text-slate-500">Add a new documentation article or reference doc.</p>
+    </div>
 
-<br>
+    <!-- Render Form Partial -->
+    <%= render "form", wiki: @wiki %>
 
-<div>
-  <%= link_to "Back to wikis", wikis_path %>
+  </div>
 </div>

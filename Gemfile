@@ -76,3 +76,5 @@ gem "stripe", "~> 20.0"
 gem "pay", "~> 12.3"
 
 gem "rails-erd", "~> 2.2"
+
+gem "tailwindcss-rails", "~> 4.6"
