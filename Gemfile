@@ -74,3 +74,5 @@ gem "money-rails", "~> 3.0"
 
 gem "stripe", "~> 20.0"
 gem "pay", "~> 12.3"
+
+gem "rails-erd", "~> 2.2"
