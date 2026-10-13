@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_13_043826) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_13_044539) do
   create_table "customers", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -35,6 +35,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_043826) do
     t.index ["stripe_product_id"], name: "index_items_on_stripe_product_id", unique: true
   end
 
+  create_table "projects", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "status", default: "draft", null: false
+    t.string "stripe_checkout_session_id"
+    t.integer "customer_id", null: false
+    t.integer "user_id", null: false
+    t.integer "project_value_cents", default: 0, null: false
+    t.string "project_value_currency", default: "USD", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_projects_on_customer_id"
+    t.index ["user_id"], name: "index_projects_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -51,4 +66,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_043826) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "projects", "customers"
+  add_foreign_key "projects", "users"
 end
