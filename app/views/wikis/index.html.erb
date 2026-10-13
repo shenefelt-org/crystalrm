@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Wikis" %>
+
+<h1>Wikis</h1>
+
+<div id="wikis">
+  <% @wikis.each do |wiki| %>
+    <%= render wiki %>
+    <p>
+      <%= link_to "Show this wiki", wiki %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New wiki", new_wiki_path %>
