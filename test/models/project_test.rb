@@ -8,4 +8,6 @@ class ProjectTest < ActiveSupport::TestCase
     assert_not_nil project.user
     assert_not_nil project.name
   end
+
+
 end

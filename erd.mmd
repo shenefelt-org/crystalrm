@@ -1,45 +1,58 @@
 erDiagram
-    direction TB
-
-    Customer {
-        string email
-        string first_name
-        string last_name
-        string stripe_customer_id
-    }
-
-    Item {
-        boolean active
-        text description
-        string name
-        integer price_cents
-        string price_currency
-        string recurring_interval
-        string stripe_price_id
-        string stripe_product_id
-    }
-
-    Project {
-        text description
-        string name
-        integer project_value_cents
-        string project_value_currency
-        string status
-        string stripe_checkout_session_id
-    }
-
-    User {
-        datetime current_sign_in_at
-        string current_sign_in_ip
-        string email
-        string encrypted_password
-        datetime last_sign_in_at
-        string last_sign_in_ip
-        datetime remember_created_at
-        datetime reset_password_sent_at
-        string reset_password_token
-        integer sign_in_count
-    }
-
-    Customer ||--o{ Project : "commissions"
-    User ||--o{ Project : "manages"
+	direction TB
+	Customer {
+		string email
+		string first_name
+		string last_name
+		string stripe_customer_id
+	}
+	Item {
+		boolean active
+		text description
+		string name
+		integer price_cents
+		string price_currency
+		string recurring_interval
+		string stripe_price_id
+		string stripe_product_id
+	}
+	Order {
+		string access_token
+		integer amount_cents
+		string amount_currency
+		string description
+		string order_number
+		datetime paid_at
+		string status
+		string stripe_checkout_session_id
+		string stripe_payment_intent_id
+	}
+	Project {
+		text description
+		string name
+		integer project_value_cents
+		string project_value_currency
+		string status
+		string stripe_checkout_session_id
+	}
+	User {
+		datetime current_sign_in_at
+		string current_sign_in_ip
+		string email
+		string encrypted_password
+		datetime last_sign_in_at
+		string last_sign_in_ip
+		datetime remember_created_at
+		datetime reset_password_sent_at
+		string reset_password_token
+		integer sign_in_count
+	}
+	Wiki {
+		text body
+		string title
+	}
+	Customer ||--}o Project : ""
+	Customer ||--}o Order : ""
+	Project ||--}o Order : ""
+	User ||--}o Project : ""
+	User ||--}o Wiki : ""
