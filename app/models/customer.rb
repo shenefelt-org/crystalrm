@@ -2,7 +2,8 @@ class Customer < ApplicationRecord
     has_many :projects, dependent: :destroy
     has_many :orders, dependent: :destroy
 
-    after_save_commit :create_stripe_customer!
+    after_create_commit :create_stripe_customer!
+
     # concat the full name from the first and last
     def full_name
         "#{first_name} #{last_name}"
@@ -11,8 +12,9 @@ class Customer < ApplicationRecord
     private
 
     def create_stripe_customer!
-        return unless stripe_customer_id.nil?
-
+        # fallback validate customer is not in stripe
+        return if Stripe::Customer.list(email: email, limit: 1).data.first
+        
         temp = Stripe::Customer.create({
             name: full_name,
             email: email,
@@ -27,5 +29,8 @@ class Customer < ApplicationRecord
 
     rescue Stripe::StripeError => e
         puts "nil"
+    end
+
+    def update_stripe_customer_id
     end
 end
