@@ -1,4 +1,6 @@
 class Item < ApplicationRecord
+  has_many :line_items
+  has_many :orders, through: :line_items 
   monetize :price_cents
 
   # Run only on record creation rather than on every update
@@ -22,6 +24,7 @@ class Item < ApplicationRecord
       stripe_product_id: temp.id,
       stripe_price_id: temp.default_price
     )
+
   rescue Stripe::StripeError => e
     Rails.logger.error("Failed to create Stripe product for Item #{id}: #{e.message}")
     errors.add(:base, e.message)
