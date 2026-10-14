@@ -78,3 +78,7 @@ gem "pay", "~> 12.3"
 gem "rails-erd", "~> 2.2"
 
 gem "tailwindcss-rails", "~> 4.6"
+
+gem "pastel", "~> 0.8.0"
+
+gem "minitest-reporters", "~> 1.8"

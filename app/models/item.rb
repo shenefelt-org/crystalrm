@@ -1,28 +1,30 @@
 class Item < ApplicationRecord
-  monetize :cost_cents
-  after_commit :make_stripe_item!
+  monetize :price_cents
 
-  private 
-  # convert a newly entered item to a stripe item and publish it
+  # Run only on record creation rather than on every update
+  after_create_commit :make_stripe_item!
+
+  private
+
   def make_stripe_item!
-    return unless stripe_product_id.empty?
+    return if stripe_product_id.present?
 
     temp = Stripe::Product.create({
       name: name,
       description: description,
       default_price_data: {
-        unit_amount: cost.cents,
-        currency: cost.currency.downcase
+        unit_amount: price.cents,
+        currency: price.currency.to_s.downcase
       }
     })
 
-    update!(
-      stripe_product_id: temp.stripe_product_id,
+    update_columns(
+      stripe_product_id: temp.id,
       stripe_price_id: temp.default_price
     )
-
-  rescue Stripe::StripeError => e 
-    errors.add(:base, "#{e.message}")
+  rescue Stripe::StripeError => e
+    Rails.logger.error("Failed to create Stripe product for Item #{id}: #{e.message}")
+    errors.add(:base, e.message)
     false
   end
 end

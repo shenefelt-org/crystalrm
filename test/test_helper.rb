@@ -1,6 +1,9 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
+require "minitest/reporters"
+
+Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 module ActiveSupport
   class TestCase
@@ -12,4 +15,9 @@ module ActiveSupport
 
     # Add more helper methods to be used by all tests here...
   end
+end
+
+# Add Devise test helpers for controller/request integration tests
+class ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
 end

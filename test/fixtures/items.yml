@@ -1,15 +1,12 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
+# test/fixtures/items.yml
 one:
-  name: MyString
-  description: MyText
-  stripe_product_id: MyString
-  stripe_price_id: MyString
-  price_cents: 1
+  name: Item One
+  price_cents: 1999
+  stripe_product_id: prod_test_one
+  stripe_price_id: price_test_one
 
 two:
-  name: MyString
-  description: MyText
-  stripe_product_id: MyString
-  stripe_price_id: MyString
-  price_cents: 1
+  name: Item Two
+  price_cents: 2999
+  stripe_product_id: prod_test_two
+  stripe_price_id: price_test_two

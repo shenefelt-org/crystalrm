@@ -1,15 +1,10 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  description: MyText
-  project_value: 1
+  name: test project
+  description: test
+  project_value_cents: 1000
+  project_value_currency: USD
   customer: one
   user: one
 
-two:
-  name: MyString
-  description: MyText
-  project_value: 1
-  customer: two
-  user: two

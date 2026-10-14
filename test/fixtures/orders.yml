@@ -3,21 +3,12 @@
 one:
   project: one
   customer: one
-  order_number: MyString
-  status: MyString
-  description: MyString
-  access_token: MyString
-  stripe_checkout_session_id: MyString
-  stripe_payment_intent_id: MyString
+  order_number: MyString1
+  status: MyString1
+  description: MyString1
+  access_token: MyString1
+  stripe_checkout_session_id: MyString1
+  stripe_payment_intent_id: MyString1
   paid_at: 2026-10-13 18:49:10
 
-two:
-  project: two
-  customer: two
-  order_number: MyString
-  status: MyString
-  description: MyString
-  access_token: MyString
-  stripe_checkout_session_id: MyString
-  stripe_payment_intent_id: MyString
-  paid_at: 2026-10-13 18:49:10
+
