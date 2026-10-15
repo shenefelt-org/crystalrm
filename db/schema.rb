@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_14_191259) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_14_235137) do
   create_table "customers", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -37,13 +37,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_14_191259) do
   end
 
   create_table "line_items", force: :cascade do |t|
-    t.integer "order_id", null: false
-    t.integer "item_id", null: false
-    t.integer "qty"
+    t.integer "quote_id"
+    t.integer "item_id"
+    t.integer "quantity", default: 1
+    t.integer "unit_price_cents", default: 0, null: false
+    t.string "unit_price_currency", default: "USD", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_line_items_on_item_id"
-    t.index ["order_id"], name: "index_line_items_on_order_id"
+    t.index ["quote_id"], name: "index_line_items_on_quote_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -82,6 +84,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_14_191259) do
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
+  create_table "quotes", force: :cascade do |t|
+    t.string "quote_number"
+    t.integer "customer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "price_cents", default: 0, null: false
+    t.string "price_currency", default: "USD", null: false
+    t.string "status"
+    t.index ["customer_id"], name: "index_quotes_on_customer_id"
+    t.index ["quote_number"], name: "index_quotes_on_quote_number", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -109,10 +123,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_14_191259) do
   end
 
   add_foreign_key "line_items", "items"
-  add_foreign_key "line_items", "orders"
+  add_foreign_key "line_items", "quotes"
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "projects"
   add_foreign_key "projects", "customers"
   add_foreign_key "projects", "users"
+  add_foreign_key "quotes", "customers"
   add_foreign_key "wikis", "users"
 end

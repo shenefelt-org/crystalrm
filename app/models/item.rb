@@ -26,8 +26,7 @@ class Item < ApplicationRecord
     )
 
   rescue Stripe::StripeError => e
-    Rails.logger.error("Failed to create Stripe product for Item #{id}: #{e.message}")
-    errors.add(:base, e.message)
+    log_stripe_error(e, action: "create item")
     false
   end
 end

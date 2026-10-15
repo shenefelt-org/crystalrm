@@ -1,6 +1,7 @@
 class Customer < ApplicationRecord
     has_many :projects, dependent: :destroy
     has_many :orders, dependent: :destroy
+    has_many :quotes, dependent: :destroy
 
     after_create_commit :create_stripe_customer!
 
@@ -14,7 +15,7 @@ class Customer < ApplicationRecord
     def create_stripe_customer!
         # fallback validate customer is not in stripe
         return if Stripe::Customer.list(email: email, limit: 1).data.first
-        
+
         temp = Stripe::Customer.create({
             name: full_name,
             email: email,
@@ -31,6 +32,4 @@ class Customer < ApplicationRecord
         puts "nil"
     end
 
-    def update_stripe_customer_id
-    end
 end
