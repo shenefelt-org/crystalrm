@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount_avo
   resources :quotes
   resources :wikis
   resources :projects
@@ -17,5 +18,5 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "home#index"
 end

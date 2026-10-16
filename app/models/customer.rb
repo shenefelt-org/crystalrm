@@ -1,6 +1,5 @@
 class Customer < ApplicationRecord
     has_many :projects, dependent: :destroy
-    has_many :orders, dependent: :destroy
     has_many :quotes, dependent: :destroy
 
     after_create_commit :create_stripe_customer!
@@ -29,7 +28,7 @@ class Customer < ApplicationRecord
         )
 
     rescue Stripe::StripeError => e
-        puts "nil"
+        log_stripe_error(e, action: "create customer")
     end
 
 end

@@ -65,6 +65,6 @@ class ProjectsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def project_params
-      params.expect(project: [ :name, :description, :project_value, :customer_id, :user_id ])
+      params.expect(project: [ :name, :description, :customer_id, :user_id ])
     end
 end

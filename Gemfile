@@ -82,3 +82,9 @@ gem "tailwindcss-rails", "~> 4.6"
 gem "pastel", "~> 0.8.0"
 
 gem "minitest-reporters", "~> 1.8"
+
+gem "sidekiq", "~> 8.1"
+
+gem "avo", "~> 4.3"
+
+gem "postgresql", "~> 1.0"

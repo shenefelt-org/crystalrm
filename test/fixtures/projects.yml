@@ -3,8 +3,6 @@
 one:
   name: test project
   description: test
-  project_value_cents: 1000
-  project_value_currency: USD
   customer: one
   user: one
 

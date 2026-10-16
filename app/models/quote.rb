@@ -1,6 +1,7 @@
 class Quote < ApplicationRecord
   belongs_to :customer
   has_many :line_items, dependent: :destroy
+  has_many :items, through: :line_items
 
   monetize :price_cents
   after_create_commit :create_stripe_quote!

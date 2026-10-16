@@ -9,5 +9,8 @@ class ProjectTest < ActiveSupport::TestCase
     assert_not_nil project.name
   end
 
-
+  test "should update project name" do
+    project = projects(:one)
+    assert project.update(name: "new test")
+  end
 end

@@ -1,6 +1,6 @@
 class Item < ApplicationRecord
   has_many :line_items
-  has_many :orders, through: :line_items 
+  has_many :quotes, through: :line_items
   monetize :price_cents
 
   # Run only on record creation rather than on every update
