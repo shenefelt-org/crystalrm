@@ -8,5 +8,4 @@ class QuoteTest < ActiveSupport::TestCase
     quote = quotes(:one)
     assert_equal customers(:one), quote.customer
   end
-
 end

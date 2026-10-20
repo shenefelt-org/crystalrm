@@ -25,7 +25,6 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
-gem "solid_queue"
 gem "solid_cable"
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -73,7 +72,6 @@ gem "pry-rails", "~> 0.3.11"
 gem "money-rails", "~> 3.0"
 
 gem "stripe", "~> 20.0"
-gem "pay", "~> 12.3"
 
 gem "rails-erd", "~> 2.2"
 
@@ -88,3 +86,18 @@ gem "sidekiq", "~> 8.1"
 gem "avo", "~> 4.3"
 
 gem "postgresql", "~> 1.0"
+
+gem "rubocop", "~> 1.92"
+
+gem "rubocop-rails", "~> 2.38"
+
+gem "foreman", "~> 0.90.0"
+
+gem "solid_queue", "~> 1.7"
+
+gem "mission_control-jobs", "~> 1.3"
+
+
+gem "rails_semantic_logger", "~> 5.2"
+
+gem "pay", "~> 12.3"

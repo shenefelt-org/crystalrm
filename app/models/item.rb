@@ -1,7 +1,7 @@
 class Item < ApplicationRecord
   has_many :line_items
   has_many :quotes, through: :line_items
-  monetize :price_cents
+  monetize :price_cents, with_model_currency: :price_currency
 
   # Run only on record creation rather than on every update
   after_create_commit :make_stripe_item!

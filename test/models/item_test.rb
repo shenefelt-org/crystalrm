@@ -11,7 +11,7 @@ class ItemTest < ActiveSupport::TestCase
     assert_equal 2399, item.price_cents
   end
 
-  # uses minitest .stub instead of .create to avoid true commits 
+  # uses minitest .stub instead of .create to avoid true commits
   test "can get an Item from the database" do
     assert Item.first.present?
   end
@@ -27,7 +27,7 @@ class ItemTest < ActiveSupport::TestCase
   end
 
   test "can destroy an item in the database" do
-    temp = Item.first 
+    temp = Item.first
     assert temp.present?
 
     assert temp.destroy!

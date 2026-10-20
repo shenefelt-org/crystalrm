@@ -4,7 +4,7 @@ class Quote < ApplicationRecord
   has_many :items, through: :line_items
 
   monetize :price_cents
-  after_create_commit :create_stripe_quote!
+  # after_create_commit :create_stripe_quote!
 
   def total
     line_items.sum(&:total)
@@ -13,13 +13,13 @@ class Quote < ApplicationRecord
   private
 
   # Create the non-finalized quote in Stripe
-  def create_stripe_quote!
+  def create_stripe_quote!(quote:)
     temp = Stripe::Quote.create({
       customer: quote.customer.stripe_customer_id,
       line_items: map_line_items,
       description: "#{quote.customer.full_name} quote",
       expires_at: 30.days.from_now.to_i,
-      header: "Shenefelt ORG"
+      header: "#{customer.company_name}"
     })
     # Store non final quote number on model
     update!(quote_number: temp.id)
@@ -32,7 +32,7 @@ class Quote < ApplicationRecord
   # helper - returns stripe required format of [{},{}] i.e array of hashes
   def map_line_items
     return if line_items.count.zero?
-    line_items.map! do |item|
+    line_items.map do |item|
       {
         price: item.stripe_price_id,
         price_data: {

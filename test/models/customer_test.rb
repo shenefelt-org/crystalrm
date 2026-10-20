@@ -1,7 +1,6 @@
 require "test_helper"
 
 class CustomerTest < ActiveSupport::TestCase
-  
   test "can create a customer in the database" do
     temp = Customer.new(first_name: "test", last_name: "test", email: "test@test.com")
     assert temp.save
@@ -33,8 +32,4 @@ class CustomerTest < ActiveSupport::TestCase
       project_value: 23.99
     )
   end
-
-
-
-
 end

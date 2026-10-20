@@ -17,7 +17,7 @@ class QuotesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create quote" do
     assert_difference("Quote.count") do
-      assert 
+      assert
       post quotes_url, params: { quote: { customer_id: @quote.customer_id, quote_number: "QT-#{SecureRandom.hex(4).upcase}" } }
     end
 
