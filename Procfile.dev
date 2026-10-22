@@ -1,4 +1,4 @@
 puma: bin/rails server -p 3030
 tailwindcss: bin/rails tailwindcss:watch
 solidQ: bundle exec rake solid_queue:start
-stripe: stripe listen --all-snapshot --forward-to localhost:3000/pay/webhooks/stripe
+stripeHook: stripe listen --all-snapshot --forward-to localhost:3030/pay/webhooks/stripe

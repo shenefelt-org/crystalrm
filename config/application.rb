@@ -25,5 +25,8 @@ module Crystalrm
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.hosts << "shenefelt.org"
+    config.hosts << ".shenefelt.org"
+    config.middleware.use Rack::Attack
+    config.mission_control.jobs.http_basic_auth_enabled = false
   end
 end

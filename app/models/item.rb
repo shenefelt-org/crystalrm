@@ -5,28 +5,25 @@ class Item < ApplicationRecord
 
   # Run only on record creation rather than on every update
   after_create_commit :make_stripe_item!
+  after_update :sync_stripe_item_update!, if: :stripe_fields_changed?
 
   private
 
+  # to pass self here you must not use a keyword arg or the whole obj is serialzed
   def make_stripe_item!
-    return if stripe_product_id.present?
+    StripeItemCreationJob.perform_later(item: self)
+  end
 
-    temp = Stripe::Product.create({
-      name: name,
-      description: description,
-      default_price_data: {
-        unit_amount: price.cents,
-        currency: price.currency.to_s.downcase
-      }
-    })
-
-    update_columns(
-      stripe_product_id: temp.id,
-      stripe_price_id: temp.default_price
+  def sync_stripe_item_update
+    StripeItemUpdateJob.perform_later(
+      item: self,
+      price_changed: saved_change_to_price_cents?
     )
+  end
 
-  rescue Stripe::StripeError => e
-    log_stripe_error(e, action: "create item")
-    false
+  def stripe_fields_changed?
+    stripe_product_id.present? && (
+      saved_change_to_name? || saved_change_to_description? || saved_change_to_active? || saved_change_to_price_cents?
+    )
   end
 end

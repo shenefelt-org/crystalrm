@@ -1,10 +1,49 @@
-<p style="color: green"><%= notice %></p>
+<!-- Unified Container -->
+<div class="max-w-md mx-auto my-8 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+  
+  <!-- Modern Flash / Notice Message (Only renders if notice is present) -->
+  <% if notice.present? %>
+    <div class="flex items-center gap-2 bg-emerald-50 border-b border-emerald-100 p-4 text-sm font-medium text-emerald-800">
+      <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span><%= notice %></span>
+    </div>
+  <% end %>
 
-<%= render @customer %>
+  <!-- Main Customer Content -->
+  <div class="p-6 text-center">
+    <div class="mb-4">
+      <%= render @customer %>
+    </div>
+    
+    <!-- Stripe ID Badge -->
+    <% if @customer&.stripe_customer_id.present? %>
+      <div class="inline-flex flex-col items-center justify-center bg-slate-50 border border-slate-100 rounded-lg px-4 py-2.5 text-xs text-slate-600 font-mono w-full">
+        <span class="text-[10px] uppercase tracking-wider font-sans font-bold text-slate-400 mb-0.5">Stripe Customer ID</span>
+        <%= @customer.stripe_customer_id %>
+      </div>
+    <% else %>
+      <span class="inline-block text-xs text-slate-400 italic">No Stripe Customer ID linked</span>
+    <% end %>
+  </div>
 
-<div>
-  <%= link_to "Edit this customer", edit_customer_path(@customer) %> |
-  <%= link_to "Back to customers", customers_path %>
+  <!-- Bottom Action Footer -->
+  <div class="flex items-center justify-between gap-3 bg-slate-50 border-t border-slate-100 px-6 py-4">
+    <div class="flex items-center gap-4 text-sm">
+      <%= link_to customers_path, class: "text-slate-600 hover:text-slate-900 font-medium transition-colors" do %>
+        Back
+      <% end %>
+      
+      <%= link_to "Edit Details", edit_customer_path(@customer), class: "text-blue-600 hover:text-blue-700 font-medium transition-colors" %>
+    </div>
 
-  <%= button_to "Destroy this customer", @customer, method: :delete %>
+    <%= button_to @customer, 
+                  method: :delete, 
+                  data: { confirm: "Are you sure?" }, 
+                  class: "text-sm text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-md font-medium transition-all" do %>
+      Delete Customer
+    <% end %>
+  </div>
+
 </div>

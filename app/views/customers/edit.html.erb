@@ -1,12 +1,65 @@
-<% content_for :title, "Editing customer" %>
+<!-- Unified Container -->
+<div class="max-w-md mx-auto my-8 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+  
+  <%= form_with(model: @customer, class: "flex flex-col") do |form| %>
+    
+    <!-- Form Error Messages -->
+    <% if @customer.errors.any? %>
+      <div class="bg-red-50 border-b border-red-100 p-4 text-sm text-red-800">
+        <div class="flex items-center gap-2 font-medium mb-2">
+          <svg class="w-5 h-5 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <span><%= pluralize(@customer.errors.count, "error") %> prevented saving:</span>
+        </div>
+        <ul class="list-disc list-inside ml-7 space-y-1 text-red-700">
+          <% @customer.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-<h1>Editing customer</h1>
+    <!-- Main Edit Content -->
+    <div class="p-6">
+      <h1 class="text-xl font-semibold text-slate-900 text-center mb-6">Edit Customer</h1>
 
-<%= render "form", customer: @customer %>
+      <!-- Editable Fields -->
+      <div class="space-y-4 mb-8 text-left">
+        <!-- Example Field: Name -->
+        <div>
+          <%= form.label :name, class: "block text-sm font-medium text-slate-700 mb-1" %>
+          <%= form.text_field :name, class: "w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm px-3 py-2 border transition-colors" %>
+        </div>
 
-<br>
+        <!-- Example Field: Email -->
+        <div>
+          <%= form.label :email, class: "block text-sm font-medium text-slate-700 mb-1" %>
+          <%= form.email_field :email, class: "w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm px-3 py-2 border transition-colors" %>
+        </div>
+        
+        <!-- Add your other editable fields here -->
+      </div>
+      
+      <!-- Read-Only Stripe ID Badge -->
+      <div class="text-center">
+        <% if @customer&.stripe_customer_id.present? %>
+          <div class="inline-flex flex-col items-center justify-center bg-slate-50 border border-slate-100 rounded-lg px-4 py-2.5 text-xs text-slate-600 font-mono w-full">
+            <span class="text-[10px] uppercase tracking-wider font-sans font-bold text-slate-400 mb-0.5">Stripe Customer ID (Read-Only)</span>
+            <%= @customer.stripe_customer_id %>
+          </div>
+        <% else %>
+          <span class="inline-block text-xs text-slate-400 italic">No Stripe Customer ID linked</span>
+        <% end %>
+      </div>
+    </div>
 
-<div>
-  <%= link_to "Show this customer", @customer %> |
-  <%= link_to "Back to customers", customers_path %>
+    <!-- Bottom Action Footer -->
+    <div class="flex items-center justify-between gap-3 bg-slate-50 border-t border-slate-100 px-6 py-4">
+      <%= link_to "Cancel", customer_path(@customer), class: "text-sm text-slate-600 hover:text-slate-900 font-medium transition-colors" %>
+      
+      <%= form.submit "Save Changes", class: "cursor-pointer text-sm text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition-all shadow-sm" %>
+    </div>
+
+  <% end %>
 </div>

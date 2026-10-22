@@ -1,0 +1,91 @@
+<!-- Unified Container -->
+<div class="max-w-md mx-auto my-8 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+  
+  <%= form_with(model: @item, class: "flex flex-col") do |form| %>
+    
+    <!-- Form Error Messages -->
+    <% if @item.errors.any? %>
+      <div class="bg-red-50 border-b border-red-100 p-4 text-sm text-red-800">
+        <div class="flex items-center gap-2 font-medium mb-2">
+          <svg class="w-5 h-5 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <span><%= pluralize(@item.errors.count, "error") %> prevented saving:</span>
+        </div>
+        <ul class="list-disc list-inside ml-7 space-y-1 text-red-700">
+          <% @item.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <!-- Main Content -->
+    <div class="p-6">
+      
+      <!-- Crystal Icon Header -->
+      <div class="flex flex-col items-center mb-6">
+        <div class="flex items-center justify-center w-12 h-12 bg-purple-50 border border-purple-100 text-purple-600 rounded-full mb-3">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6L9 3h6l6.75 3-8.25 15L2.25 6z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6L12 9l9.75-3" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v12" />
+          </svg>
+        </div>
+        <h1 class="text-xl font-semibold text-slate-900 text-center">New Item</h1>
+      </div>
+
+      <!-- Editable Inputs -->
+      <div class="space-y-4 mb-6 text-left">
+        <div>
+          <%= form.label :name, class: "block text-sm font-medium text-slate-700 mb-1" %>
+          <%= form.text_field :name, placeholder: "e.g., Amethyst Geode", class: "w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm px-3 py-2 border transition-colors" %>
+        </div>
+
+        <!-- Money-Rails Decimal Price Input -->
+        <div>
+          <%= form.label :price, class: "block text-sm font-medium text-slate-700 mb-1" %>
+          <div class="relative rounded-lg shadow-sm">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <span class="text-slate-500 sm:text-sm font-medium"><%= @item.price&.currency&.symbol || "$" %></span>
+            </div>
+            <%= form.number_field :price, 
+                                  step: "0.01", 
+                                  min: "0", 
+                                  placeholder: "0.00", 
+                                  value: (@item.price.present? ? sprintf('%.2f', @item.price.to_d) : nil), 
+                                  class: "w-full rounded-lg border-slate-300 pl-7 pr-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm border transition-colors" %>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 pt-1">
+          <%= form.check_box :active, checked: true, class: "w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer" %>
+          <%= form.label :active, "Active and available for purchase", class: "text-sm font-medium text-slate-700 select-none cursor-pointer" %>
+        </div>
+
+        <div>
+          <%= form.label :description, class: "block text-sm font-medium text-slate-700 mb-1" %>
+          <%= form.text_area :description, rows: 3, placeholder: "Describe the item...", class: "w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm px-3 py-2 border transition-colors" %>
+        </div>
+      </div>
+      
+      <!-- Informational Badge for New Records -->
+      <div class="text-center pt-4 border-t border-slate-100">
+        <div class="inline-flex items-center justify-center gap-2 bg-slate-50 border border-slate-100 rounded-lg px-4 py-3 text-xs text-slate-500 w-full text-left">
+          <svg class="w-5 h-5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Stripe Product ID and Price ID will be generated automatically upon creation.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Action Footer -->
+    <div class="flex items-center justify-between gap-3 bg-slate-50 border-t border-slate-100 px-6 py-4">
+      <%= link_to "Cancel", items_path, class: "text-sm text-slate-600 hover:text-slate-900 font-medium transition-colors" %>
+      
+      <%= form.submit "Create Item", class: "cursor-pointer text-sm text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition-all shadow-sm" %>
+    </div>
+
+  <% end %>
+</div>

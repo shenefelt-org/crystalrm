@@ -7,6 +7,5 @@ class StripeCustomerCreationJob < ApplicationJob
 
     customer.update!(stripe_customer_id: temp.id)
 
-    
   end
 end

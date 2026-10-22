@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :items
   mount_avo
   resources :quotes
   resources :wikis

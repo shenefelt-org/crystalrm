@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_20_052803) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_22_012945) do
   create_schema "extensions"
 
   # These are extensions that must be enabled in order to support this database
@@ -31,6 +31,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_052803) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "public.color_source", ["99COLORS_NET", "ART_PAINTS_YG07S", "BYRNE", "CRAYOLA", "CMYK_COLOR_MODEL", "COLORCODE_IS", "COLORHEXA", "COLORXS", "CORNELL_UNIVERSITY", "COLUMBIA_UNIVERSITY", "DUKE_UNIVERSITY", "ENCYCOLORPEDIA_COM", "ETON_COLLEGE", "FANTETTI_AND_PETRACCHI", "FINDTHEDATA_COM", "FERRARIO_1919", "FEDERAL_STANDARD_595", "FLAG_OF_INDIA", "FLAG_OF_SOUTH_AFRICA", "GLAZEBROOK_AND_BALDRY", "GOOGLE", "HEXCOLOR_CO", "ISCC_NBS", "KELLY_MOORE", "MATTEL", "MAERZ_AND_PAUL", "MILK_PAINT", "MUNSELL_COLOR_WHEEL", "NATURAL_COLOR_SYSTEM", "PANTONE", "PLOCHERE", "POURPRE_COM", "RAL", "RESENE", "RGB_COLOR_MODEL", "THOM_POOLE", "UNIVERSITY_OF_ALABAMA", "UNIVERSITY_OF_CALIFORNIA_DAVIS", "UNIVERSITY_OF_CAMBRIDGE", "UNIVERSITY_OF_NORTH_CAROLINA", "UNIVERSITY_OF_TEXAS_AT_AUSTIN", "X11_WEB", "XONA_COM"]
 
+  create_table "public.account_balance_transactions", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.integer "amount_cents", default: 0, null: false
+    t.string "amount_currency", default: "usd", null: false
+    t.string "stripe_balance_transaction_id"
+    t.string "description"
+    t.integer "transaction_type", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_account_balance_transactions_on_customer_id"
+    t.index ["stripe_balance_transaction_id"], name: "idx_on_stripe_balance_transaction_id_88530deb4b", unique: true
+  end
+
   create_table "public.customers", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -39,6 +52,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_052803) do
     t.datetime "updated_at", null: false
     t.string "stripe_customer_id"
     t.string "company_name"
+    t.integer "balance_cents", default: 0, null: false
+    t.string "balance_currency", default: "USD", null: false
+    t.string "description"
+    t.boolean "past_due", default: false
     t.index ["email"], name: "index_customers_on_email", unique: true
   end
 
@@ -224,6 +241,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_052803) do
     t.index ["user_id"], name: "index_wikis_on_user_id"
   end
 
+  add_foreign_key "public.account_balance_transactions", "public.customers"
   add_foreign_key "public.line_items", "public.items"
   add_foreign_key "public.line_items", "public.quotes"
   add_foreign_key "public.pay_charges", "public.pay_customers", column: "customer_id"

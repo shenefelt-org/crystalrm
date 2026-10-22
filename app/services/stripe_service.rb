@@ -46,8 +46,8 @@ class StripeService
     # Delete a stripe customer
     # @param customer - the customer to delete
     def self.delete_stripe_customer(customer:)
-        return unless customer.present?
-        Strip::Customer.delete(customer.stripe_customer_id)
+        return unless customer.present? && customer.stripe_customer_id.present?
+        Stripe::Customer.delete(customer.stripe_customer_id)
 
     rescue Stripe::StripeError => e
         false
@@ -59,7 +59,7 @@ class StripeService
     def self.update_stripe_item_name(item:)
         return unless item&.stripe_product_id.present?
         Stripe::Product.update(
-            item.stripe_product_id,{ name: item.name }
+            item.stripe_product_id, { name: item.name }
         )
     rescue Stripe::StripeError => e
         puts "ERR #{e.message}"
@@ -158,13 +158,6 @@ class StripeService
         false
     end
 
-    def self.find_quote_by_customer_email(customer:)
-        return unless customer&.stripe_customer_id.present?
-        Stripe::Quote.retrieve(customer.email) ||= nil
-
-    rescue Stripe::StripeError => 
-        false
-    end
 
     def self.list_draft_quotes
     end
