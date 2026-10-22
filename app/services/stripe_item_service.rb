@@ -8,6 +8,7 @@ class StripeItemService
       {
         name: item.name,
         description: item.description,
+        statement_descriptor: item.name,
         metadata: {
           local_item_id: item.id
         }

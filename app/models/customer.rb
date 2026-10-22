@@ -5,6 +5,7 @@ class Customer < ApplicationRecord
     monetize :balance_cents
     pay_customer default_payment_processor: :stripe
 
+    after_create_commit :create_stripe_customer!
     after_update :update_stripe_customer, if: :stripe_fields_changed?
 
 
@@ -32,6 +33,11 @@ class Customer < ApplicationRecord
     end
 
     private
+
+    def create_stripe_customer!
+        return if stripe_customer_id.present?
+        StripeCustomerCreationJob.perform_later(customer: self, indem_key: "create_stripe_cust_#{id}")
+    end
 
     def update_stripe_customer 
         StripeCustomerUpdateJob.perform_later(customer: self)
