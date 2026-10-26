@@ -1,5 +1,7 @@
 class Avo::Resources::AccountBalanceTransaction < Avo::BaseResource
-  # self.icon = "tabler/outline/users"
+  self.icon = "tabler/outline/chart-bar"
+  self.title = "Balance Transactions"
+
   # self.avatar = {
   #   source: :avatar
   # }
@@ -9,11 +11,15 @@ class Avo::Resources::AccountBalanceTransaction < Avo::BaseResource
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
   # }
 
+  def navigation_label
+    "Balance Transactions"
+  end
+
   def fields
     field :id, as: :id
     # field :avatar, as: :avatar
     field :customer, as: :belongs_to
-    field :amount_cents, as: :number
+    field :amount, as: :number
     field :amount_currency, as: :text
     field :stripe_balance_transaction_id, as: :text
     field :description, as: :textarea

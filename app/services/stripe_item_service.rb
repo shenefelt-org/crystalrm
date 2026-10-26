@@ -2,13 +2,13 @@ class StripeItemService
   @pastel = Pastel.new
   # create a new item inside the stripe catalog
   def self.create_item(item:)
-    return unless item.present? && item.stripe_product_id.nil?
+    # return unless item.present? && item.stripe_product_id.nil?
 
     temp_item = Stripe::Product.create(
       {
         name: item.name,
         description: item.description,
-        statement_descriptor: item.name,
+        statement_descriptor: "#{item.id} sale",
         metadata: {
           local_item_id: item.id
         }
@@ -19,7 +19,14 @@ class StripeItemService
       {
         product: temp_item.id,
         unit_amount: item.price_cents,
-        currency: item.price_currency.to_s.downcase
+        currency: item.price_currency.to_s.downcase,
+        recurring: {
+          interval: item.recurring_interval
+        },
+        metadata: {
+          is_subscription: item.recurring_interval == "month"
+        }
+
       }
     )
 
@@ -28,7 +35,6 @@ class StripeItemService
       stripe_price_id: temp_price.id
     )
   rescue Stripe::StripeError => e
-    colorize_errors(err: e)
   end
 
   # handle updates to an item in the catalog - price changes require new Price creation.
@@ -64,9 +70,10 @@ class StripeItemService
     colorize_errors(err: e)
   end
 
+
   private 
 
-  def colorize_errors(err:)
+  def self.colorize_errors(err:)
     return unless err.present?
     puts @pastel.red.on_white(err.message)
   end

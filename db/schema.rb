@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_22_012945) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_25_203838) do
   create_schema "extensions"
 
   # These are extensions that must be enabled in order to support this database
@@ -40,6 +40,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_012945) do
     t.integer "transaction_type", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "credit"
     t.index ["customer_id"], name: "index_account_balance_transactions_on_customer_id"
     t.index ["stripe_balance_transaction_id"], name: "idx_on_stripe_balance_transaction_id_88530deb4b", unique: true
   end
@@ -56,6 +57,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_012945) do
     t.string "balance_currency", default: "USD", null: false
     t.string "description"
     t.boolean "past_due", default: false
+    t.boolean "active_customer"
     t.index ["email"], name: "index_customers_on_email", unique: true
   end
 
@@ -185,6 +187,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_012945) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "public.plans", force: :cascade do |t|
+    t.string "name"
+    t.bigint "item_id", null: false
+    t.string "interval"
+    t.integer "price_cents", default: 0, null: false
+    t.string "price_currency", default: "usd", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_plans_on_item_id"
+  end
+
   create_table "public.projects", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -213,6 +226,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_012945) do
   create_table "public.solid_queue_tables", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "public.subscriptions", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.string "stripe_subscription_id"
+    t.string "status"
+    t.integer "price_cents", default: 0, null: false
+    t.string "price_currency", default: "usd", null: false
+    t.datetime "current_period_end"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "item_id", null: false
+    t.index ["customer_id"], name: "index_subscriptions_on_customer_id"
+    t.index ["item_id"], name: "index_subscriptions_on_item_id"
+    t.index ["stripe_subscription_id"], name: "index_subscriptions_on_stripe_subscription_id", unique: true
   end
 
   create_table "public.users", force: :cascade do |t|
@@ -248,9 +276,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_012945) do
   add_foreign_key "public.pay_charges", "public.pay_subscriptions", column: "subscription_id"
   add_foreign_key "public.pay_payment_methods", "public.pay_customers", column: "customer_id"
   add_foreign_key "public.pay_subscriptions", "public.pay_customers", column: "customer_id"
+  add_foreign_key "public.plans", "public.items"
   add_foreign_key "public.projects", "public.customers"
   add_foreign_key "public.projects", "public.users"
   add_foreign_key "public.quotes", "public.customers"
+  add_foreign_key "public.subscriptions", "public.customers"
+  add_foreign_key "public.subscriptions", "public.items"
   add_foreign_key "public.wikis", "public.users"
 
   create_table "extensions.wrappers_fdw_stats", primary_key: "fdw_name", id: :text, comment: "Wrappers Foreign Data Wrapper statistics", force: :cascade do |t|

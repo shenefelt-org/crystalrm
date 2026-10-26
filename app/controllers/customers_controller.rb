@@ -8,6 +8,8 @@ class CustomersController < ApplicationController
 
   # GET /customers/1 or /customers/1.json
   def show
+    @customer = Customer.find(params[:id])
+    @pay_method = @customer&.payment_processor&.default_payment_method&.data&.symbolize_keys
   end
 
   # GET /customers/new
@@ -53,7 +55,7 @@ class CustomersController < ApplicationController
     @customer.destroy!
 
     respond_to do |format|
-      StripeService.destroy_stripe_customer(@customer)
+      StripeCustomerService.destroy_customer(@customer)
       format.html { redirect_to customers_path, notice: "Customer was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end

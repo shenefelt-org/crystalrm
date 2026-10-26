@@ -10,14 +10,15 @@ class AccountBalanceTransaction < ApplicationRecord
       currency: amount_currency,
       description: description,
     }
-    
+
   end
 
   private
   
+  # sig webhook update in queue 
   def create_stripe_balance_transaction 
     return unless customer.present?
-    StripeCustomerUpdateJob.perform_later(transaction: self)
+    UpdateStripeCustomerBalanceJob.perform_later(transaction: self)
   end
 
 

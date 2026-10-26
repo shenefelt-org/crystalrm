@@ -1,16 +1,58 @@
-<h2>Forgot your password?</h2>
+<% content_for :title, "Forgot Password" %>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+<!-- Unified Auth Container -->
+<div class="max-w-md mx-auto my-12 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+  
+  <!-- Alert Banner -->
+  <% if alert.present? %>
+    <div class="flex items-center gap-2 bg-red-50 border-b border-red-100 p-4 text-sm font-medium text-red-800" id="alert">
+      <svg class="w-5 h-5 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+      </svg>
+      <span><%= alert %></span>
+    </div>
+  <% end %>
 
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
+  <!-- Header Section with Crystal Icon -->
+  <div class="flex items-center gap-3 p-6 border-b border-slate-100 bg-slate-50/50">
+    <div class="flex items-center justify-center w-10 h-10 bg-[#F4F5FD] border border-[#E8EAFA] text-[#6B7CE6] rounded-lg shrink-0">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6L9 3h6l6.75 3-8.25 15L2.25 6z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6L12 9l9.75-3" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v12" />
+      </svg>
+    </div>
+    <div>
+      <h1 class="text-xl font-bold text-slate-900">Reset password</h1>
+      <p class="text-xs text-slate-500 mt-0.5">Enter your email to receive recovery instructions</p>
+    </div>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Send me password reset instructions" %>
-  </div>
-<% end %>
+  <!-- Form Body -->
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "p-6 space-y-4" }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
 
-<%= render "devise/shared/links" %>
+    <!-- Email Field -->
+    <div>
+      <%= f.label :email, class: "block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5" %>
+      <%= f.email_field :email, 
+                        autofocus: true, 
+                        autocomplete: "email", 
+                        placeholder: "name@company.com", 
+                        class: "w-full rounded-lg border border-slate-200 px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#6B7CE6] focus:outline-none focus:ring-2 focus:ring-[#6B7CE6]/20 transition-all shadow-sm" %>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="pt-2">
+      <%= f.button "Send reset instructions", 
+                   type: :submit, 
+                   class: "w-full inline-flex items-center justify-center text-sm font-semibold text-white bg-[#6B7CE6] hover:bg-[#5260D4] px-4 py-2.5 rounded-lg transition-all shadow-sm cursor-pointer" %>
+    </div>
+  <% end %>
+
+  <!-- Devise Shared Links Footer -->
+  <div class="bg-slate-50/75 border-t border-slate-100 px-6 py-4 text-center text-xs text-slate-500 space-y-1.5 [&_a]:text-[#5260D4] [&_a]:font-medium hover:[&_a]:text-[#404DBA] hover:[&_a]:underline">
+    <%= render "devise/shared/links" %>
+  </div>
+
+</div>
