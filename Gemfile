@@ -75,7 +75,7 @@ gem "stripe", "~> 20.0"
 
 gem "rails-erd", "~> 2.2"
 
-gem "tailwindcss-rails", "~> 4.6"
+gem "tailwindcss-rails", "~> 4.7"
 
 gem "pastel", "~> 0.8.0"
 
