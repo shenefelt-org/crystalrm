@@ -71,7 +71,7 @@ gem "pry-rails", "~> 0.3.11"
 
 gem "money-rails", "~> 3.0"
 
-gem "stripe", "~> 20.0"
+gem "stripe", "~> 20.1"
 
 gem "rails-erd", "~> 2.2"
 
