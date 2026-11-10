@@ -100,6 +100,6 @@ gem "mission_control-jobs", "~> 1.3"
 
 gem "rails_semantic_logger", "~> 5.2"
 
-gem "pay", "~> 12.3"
+gem "pay", "~> 12.4"
 
 gem "rack-attack", "~> 6.8"
